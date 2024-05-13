@@ -1,37 +1,46 @@
+"use client";
 import * as React from "react";
 import { Todo } from "@/util/types";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
+import { format } from "date-fns";
+import { useState } from "react";
+import TodoDetailed from "./TodoDetailed";
+import { Checkbox } from "../ui/checkbox";
 type TodoItemProps = {
   todo: Todo;
 };
 export function TodoItem({ todo }: TodoItemProps) {
-  const { id, title, deadline, description, completed } = todo;
+  const { title, id, deadline, completed } = todo;
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <li className="flex border rounded-lg p-4 justify-between">
+    <li key={id} className="flex border rounded-lg p-4 justify-between">
       <div>
-        <h2 className="scroll-m-20 text-xl font-semibold tracking-tight">
+        <h2
+          onClick={() => setIsOpen(true)}
+          className={`scroll-m-20 text-xl font-semibold tracking-tight ${
+            completed ? "line-through" : ""
+          }`}>
           {title}
         </h2>
-        <p className="leading-7">{"12/04/2021"}</p>
+        <p className="leading-7">{format(deadline, "PPP")}</p>
+        <Button
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          className="mt-3"
+          size="sm">
+          View Details
+        </Button>
       </div>
-      <div className="flex flex-col items-center gap-4">
-        {todo.completed ? (
-          <span className="text-green-500">Done</span>
+      <div className="flex flex-col items-center justify-center  gap-4">
+        {completed ? (
+          <span className="text-green-500 px-3">Done</span>
         ) : (
           <span className="text-orange-500">Pending</span>
         )}
-        {!todo.completed && <Button size="sm">Mark as Done</Button>}
-        {todo.completed && <Button size="sm">Mark as Un Done</Button>}
+        <Checkbox checked={completed} className="w-6 h-6" />
       </div>
+      <TodoDetailed todo={todo} isOpen={isOpen} setIsOpen={setIsOpen} />
     </li>
   );
 }

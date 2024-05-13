@@ -53,7 +53,7 @@ const staticData: Todo[] = [
 ];
 export const TodoList = () => {
   return (
-    <ul className="flex px-4 flex-col gap-3">
+    <ul className="flex pr-4 pb-8 flex-col gap-3">
       {staticData.map((todo) => (
         <TodoItem key={todo.id} todo={todo} />
       ))}
