@@ -5,14 +5,9 @@ export interface IUser extends Document {
   lastName: string;
   email: string;
   password: string;
-  isVerified: boolean;
-  verifyToken: string;
-  verifyTokenExpiry: Date;
-  forgotPassword: string;
-  forgotPasswordExpiry: Date;
 }
 
-const userSchema: Schema<IUser> = new mongoose.Schema({
+const userSchema: Schema<IUser> = new Schema({
   firstName: {
     type: String,
     required: true,
@@ -30,23 +25,10 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
-  verifyToken: {
-    type: String,
-  },
-  verifyTokenExpiry: {
-    type: Date,
-  },
-  forgotPassword: {
-    type: String,
-  },
-  forgotPasswordExpiry: {
-    type: Date,
-  },
 });
 
-export default (mongoose.models.User as mongoose.Model<IUser>) ||
+const userModel =
+  (mongoose.models.User as mongoose.Model<IUser>) ||
   mongoose.model<IUser>("User", userSchema);
+
+export default userModel;
