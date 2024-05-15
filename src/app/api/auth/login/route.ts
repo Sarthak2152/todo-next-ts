@@ -1,24 +1,29 @@
-import { NextRequest, NextResponse } from "next/server";
-import { loginSchema } from "@/app/schemas/userLoginSchema";
+import { NextResponse } from "next/server";
+import { loginSchema } from "@/schemas/userLoginSchema";
 import { fromZodError } from "zod-validation-error";
 import userModel from "@/models/User";
 import { comparePasswords } from "@/lib/managePasswords";
 import * as jwt from "jsonwebtoken";
+import dbConnect from "@/lib/dbConnect";
+import type { JwtPayload } from "@/util/types";
+
+dbConnect();
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const validatedLoginDate = loginSchema.safeParse(body);
-    if (!validatedLoginDate.success) {
+    const validatedLoginData = loginSchema.safeParse(body);
+    console.log("🚀 ~ POST ~ validatedLoginData:", validatedLoginData);
+    if (!validatedLoginData.success) {
       return Response.json(
         {
           success: false,
-          message: fromZodError(validatedLoginDate.error).message,
+          message: fromZodError(validatedLoginData.error).message,
         },
         { status: 400 }
       );
     }
     const user = await userModel.findOne({
-      email: validatedLoginDate.data.email,
+      email: validatedLoginData.data.email,
     });
     if (!user) {
       return Response.json(
@@ -31,9 +36,8 @@ export async function POST(request: Request) {
     }
     const validPassword = await comparePasswords(
       user.password,
-      validatedLoginDate.data.password
+      validatedLoginData.data.password
     );
-    console.log("🚀 ~ POST ~ validPassword:", validPassword);
 
     if (!validPassword) {
       return Response.json(
@@ -44,17 +48,21 @@ export async function POST(request: Request) {
         { status: 401 }
       );
     }
-    const jwtPayload = { userId: user.id, email: user.email };
+    const jwtPayload: JwtPayload = { userId: user._id, email: user.email };
     const token = await jwt.sign(jwtPayload, process.env.JWT_SECRET!, {
       expiresIn: "1d",
     });
     const response = NextResponse.json(
-      { success: true, message: "User logged in successfully" },
+      { success: true, data: user, message: "User logged in successfully" },
       { status: 200 }
     );
     response.cookies.set("token", token, { httpOnly: true });
+    response.cookies.set("user", JSON.stringify({ ...user, password: "" }), {
+      httpOnly: true,
+    });
     return response;
   } catch (error: any) {
+    console.log(error);
     return Response.json(
       {
         success: false,

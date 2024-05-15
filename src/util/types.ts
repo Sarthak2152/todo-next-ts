@@ -5,3 +5,8 @@ export type Todo = {
   deadline: Date;
   completed: boolean;
 };
+
+export type JwtPayload = {
+  userId: string;
+  email: String;
+};

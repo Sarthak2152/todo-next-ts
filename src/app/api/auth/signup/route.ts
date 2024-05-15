@@ -1,4 +1,4 @@
-import { userSignUpSchema } from "@/app/schemas/userSignUpSchema";
+import { userSignUpSchema } from "@/schemas/userSignUpSchema";
 import { NextRequest } from "next/server";
 import { fromZodError } from "zod-validation-error";
 import dbConnect from "@/lib/dbConnect";
