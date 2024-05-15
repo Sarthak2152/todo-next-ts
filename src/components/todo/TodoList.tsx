@@ -1,62 +1,49 @@
 import React from "react";
-import { Todo } from "@/util/types";
 import { TodoItem } from "./TodoItem";
-const staticData: Todo[] = [
-  {
-    id: "1",
-    title: "Demo todo one",
-    description:
-      "Demo todo one lorem ipsum dolor sit amet in con laoreet et justo",
-    deadline: new Date(),
-    completed: false,
-  },
-  {
-    id: "2",
-    title: "Demo todo two",
-    description:
-      "Demo todo one lorem ipsum dolor sit amet in con laoreet et justo",
-    deadline: new Date(),
-    completed: true,
-  },
-  {
-    id: "3",
-    title: "Demo todo three",
-    description:
-      "Demo todo one lorem ipsum dolor sit amet in con laoreet et justo",
-    deadline: new Date(),
-    completed: false,
-  },
-  {
-    id: "4",
-    title: "Demo todo four",
-    description:
-      "Demo todo one lorem ipsum dolor sit amet in con laoreet et justo",
-    deadline: new Date(),
-    completed: false,
-  },
-  {
-    id: "5",
-    title: "Demo todo five",
-    description:
-      "Demo todo one lorem ipsum dolor sit amet in con laoreet et justo",
-    deadline: new Date(),
-    completed: false,
-  },
-  {
-    id: "6",
-    title: "Demo todo six",
-    description:
-      "Demo todo one lorem ipsum dolor sit amet in con laoreet et justo",
-    deadline: new Date(),
-    completed: false,
-  },
-];
-export const TodoList = () => {
-  return (
-    <ul className="flex pr-4 pb-8 flex-col gap-3">
-      {staticData.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
-      ))}
-    </ul>
-  );
+import { getUserDetails } from "@/lib/getUserWithoutRequest";
+import TodoModel from "@/models/Todo";
+import dbConnect from "@/lib/dbConnect";
+import { unstable_noStore as noStore } from "next/cache";
+
+export const TodoList = async () => {
+  noStore();
+  try {
+    await dbConnect();
+    const jwtPayload = await getUserDetails();
+    const todos = await TodoModel.find({ user: jwtPayload?.userId });
+    const plainTodos = todos.map((todo) => ({
+      id: todo.id,
+      title: todo.title,
+      description: todo.description,
+      completed: todo.completed,
+      deadline: todo.deadline,
+    }));
+    if (plainTodos.length === 0) {
+      return (
+        <div>
+          <h3 className="scroll-m-20 text-center text-2xl font-semibold tracking-tight">
+            You have no todo&apos;s
+          </h3>
+          <p className="text-center mt-4">Add todo to get started</p>
+        </div>
+      );
+    }
+    return (
+      <ul className="flex pr-4 pb-8 flex-col gap-3">
+        {plainTodos.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} />
+        ))}
+      </ul>
+    );
+  } catch (error: any) {
+    console.log("🚀 ~ TodoList ~ error:", error);
+    return (
+      <div>
+        <h3 className="scroll-m-20 text-center text-2xl font-semibold tracking-tight">
+          Error occurred while fetching todo&apos;s
+        </h3>
+        <p className="text-center mt-4">{error?.message}</p>
+      </div>
+    );
+  }
 };

@@ -6,7 +6,7 @@ import { Navbar } from "@/components/navbar/Navbar";
 import { cn } from "@/lib/utils";
 import { Footer } from "@/components/footer/Footer";
 const inter = Inter({ subsets: ["latin"] });
-
+import { Toaster } from "@/components/ui/toaster";
 export const metadata: Metadata = {
   title: "Todo App",
   description: "This is a simple todo ",
@@ -28,6 +28,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
