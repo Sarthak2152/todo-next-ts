@@ -3,7 +3,6 @@
 import * as React from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -14,22 +13,18 @@ import {
 } from "@/components/ui/popover";
 
 type DatePickerProps = {
-  target: Date | undefined;
+  date: Date | undefined;
+  setDate: (date: Date | undefined) => void;
   disabled: boolean;
 };
-export function DatePicker({ target, disabled }: DatePickerProps) {
-  const [date, setDate] = React.useState<Date>();
-
-  React.useEffect(() => {
-    if (target) {
-      setDate(target);
-    }
-  }, []);
+export function DatePicker({ date, setDate, disabled }: DatePickerProps) {
+  React.useEffect(() => {}, []);
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          type="button"
           variant={"outline"}
           className={cn(
             "w-full justify-start text-left font-normal",

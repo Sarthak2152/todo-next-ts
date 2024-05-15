@@ -8,7 +8,7 @@ export const todoSchema = z.object({
     .string()
     .min(10, { message: "Description must be at least 10 characters long" }),
   completed: z.boolean().default(false),
-  deadline: z.coerce.date(),
+  deadline: z.coerce.date({ required_error: "Deadline is required" }),
 });
 
 export type Todo = z.infer<typeof todoSchema>;

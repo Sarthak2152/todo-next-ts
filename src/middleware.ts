@@ -3,9 +3,9 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
-  console.log("🚀 ~ middleware ~ token:", token);
+  // console.log("🚀 ~ middleware ~ token:", token);
   const path = request.nextUrl.pathname;
-  console.log("🚀 ~ middleware ~ path:", path);
+  // console.log("🚀 ~ middleware ~ path:", path);
 
   const isPublicPath = path === "/login" || path === "/signup";
   if (!token && !isPublicPath) {
@@ -15,7 +15,6 @@ export function middleware(request: NextRequest) {
   } else return NextResponse.next();
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
   matcher: ["/", "/login", "/signup"],
 };

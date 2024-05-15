@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { useState } from "react";
@@ -19,11 +18,11 @@ function AuthButton() {
     try {
       setLoading(true);
       const response = await axios.get(`http://localhost:3000/api/auth/logout`);
+      router.push("/login");
       toast({
         title: "Logged out successfully",
         description: "You were logged out!",
       });
-      router.push("/login");
     } catch (error: any) {
       console.log("🚀 ~ onLogoutHandler ~ error:", error);
       toast({
@@ -41,16 +40,7 @@ function AuthButton() {
       disabled={loading}
       type="button"
       variant="default">
-      {!loading ? (
-        "Logout"
-      ) : (
-        <>
-          <svg
-            className="text-black animate-spin h-5 w-5 mr-3 ..."
-            viewBox="0 0 24 24"></svg>
-          Logging out...
-        </>
-      )}
+      {!loading ? "Logout" : "Logging out..."}
     </Button>
   );
 }

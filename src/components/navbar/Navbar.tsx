@@ -3,6 +3,7 @@ import { ToggleTheme } from "../ToggleTheme";
 import Link from "next/link";
 
 import AuthButton from "./AuthButton";
+import Profile from "./Profile";
 export const Navbar = () => {
   return (
     <div className="w-full flex justify-between items-center py-8 px-6">
@@ -13,6 +14,7 @@ export const Navbar = () => {
       </Link>
       <div className="flex gap-3 items-center">
         <AuthButton />
+        <Profile />
         <ToggleTheme />
       </div>
     </div>

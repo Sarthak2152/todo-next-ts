@@ -13,10 +13,8 @@ export const userSignUpSchema = z.object({
   email: z.string().email(),
   password: z
     .string()
-    .regex(
-      passwordRegex,
-      "Password must be at least 8 characters long and contain at least one letter and one number."
-    ),
+    .min(8, "Password must be at least 8 characters")
+    .regex(passwordRegex, "Password must contain letter and number."),
 });
 
 export type UserSignUp = z.infer<typeof userSignUpSchema>;

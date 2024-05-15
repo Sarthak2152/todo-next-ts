@@ -28,6 +28,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log("🚀 ~ POST ~ body:", body);
     const validatedTodo = todoSchema.safeParse(body);
     if (!validatedTodo.success) {
       return Response.json(
@@ -51,6 +52,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
+    console.log("🚀 ~ POST ~ error:", error);
     return Response.json(
       { success: false, message: error.message },
       { status: 500 }

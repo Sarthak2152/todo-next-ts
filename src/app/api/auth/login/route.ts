@@ -57,7 +57,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
     response.cookies.set("token", token, { httpOnly: true });
-    response.cookies.set("user", JSON.stringify({ ...user, password: "" }), {
+    response.cookies.set("user", JSON.stringify(user), {
       httpOnly: true,
     });
     return response;

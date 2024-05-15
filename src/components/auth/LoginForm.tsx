@@ -85,17 +85,8 @@ const LoginForm = () => {
               </div>
               <Input id="password" type="password" {...register("password")} />
             </div>
-            <Button type="submit" className="w-full">
-              {!loading ? (
-                "Login"
-              ) : (
-                <>
-                  <svg
-                    className="text-black animate-spin h-5 w-5 mr-3 ..."
-                    viewBox="0 0 24 24"></svg>
-                  Logging in...
-                </>
-              )}
+            <Button type="submit" disabled={loading} className="w-full">
+              {!loading ? "Login" : "Logging in..."}
             </Button>
           </div>
           <div className="mt-4 text-center text-sm">
