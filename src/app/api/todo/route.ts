@@ -4,7 +4,7 @@ import { getUserOnServer } from "@/lib/getUserOnServer";
 import { NextRequest } from "next/server";
 import TodoModel from "@/models/Todo";
 import { fromZodError } from "zod-validation-error";
-
+import { revalidatePath } from "next/cache";
 dbConnect();
 export async function GET(request: NextRequest) {
   try {
@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     console.log("🚀 ~ GET ~ jwtPayload:", jwtPayload);
     const allTodos = await TodoModel.find({ user: jwtPayload.userId });
     console.log("🚀 ~ GET ~ allTodos:", allTodos);
+    revalidatePath("/", "page");
     return Response.json({
       data: allTodos,
       success: true,

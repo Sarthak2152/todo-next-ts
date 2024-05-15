@@ -11,7 +11,7 @@ type TodoItemProps = {
   todo: Todo;
 };
 export function TodoItem({ todo }: TodoItemProps) {
-  const { title, _id, deadline, completed } = todo;
+  const { title, id, deadline, completed } = todo;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean | "indeterminate">(
     completed
@@ -21,7 +21,7 @@ export function TodoItem({ todo }: TodoItemProps) {
     try {
       setIsLoading(true);
       const response = await axios.patch(
-        `http://localhost:3000/api/todo/${_id}`,
+        `http://localhost:3000/api/todo/${id}`,
         { completed: checked }
       );
       console.log("🚀 ~ handleChangeCompleted ~ response:", response);
@@ -35,7 +35,7 @@ export function TodoItem({ todo }: TodoItemProps) {
   };
 
   return (
-    <li key={_id} className="flex border rounded-lg p-4 justify-between">
+    <li key={id} className="flex border rounded-lg p-4 justify-between">
       <div>
         <h2
           onClick={() => setIsOpen(true)}

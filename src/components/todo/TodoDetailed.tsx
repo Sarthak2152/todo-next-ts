@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { todoSchema, Todo as todoType } from "@/schemas/todoSchema";
 import { useToast } from "../ui/use-toast";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type TodoDetailedProps = {
   isOpen: boolean;
@@ -25,6 +26,7 @@ export default function TodoDetailed({
   setIsOpen,
 }: TodoDetailedProps) {
   const { toast } = useToast();
+  const router = useRouter();
   const [edit, setEdit] = useState<boolean>(false);
   const [date, setDate] = useState<Date | undefined>(todo.deadline);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -59,13 +61,14 @@ export default function TodoDetailed({
     try {
       setIsLoading(true);
       const response = await axios.patch(
-        `http://localhost:3000/api/todo/${todo._id}`,
+        `http://localhost:3000/api/todo/${todo.id}`,
         data
       );
       toast({
         title: "Todo Updated Successfully",
         description: "Todo has been updated",
       });
+      router.refresh();
     } catch (error: any) {
       console.log(
         "🚀 ~ constonSubmit:SubmitHandler<todoType>= ~ error:",
@@ -92,7 +95,7 @@ export default function TodoDetailed({
     try {
       setIsLoading(true);
       const response = await axios.delete(
-        `http://localhost:3000/api/todo/${todo._id}`
+        `http://localhost:3000/api/todo/${todo.id}`
       );
       console.log("🚀 ~ handleDelete ~ response:", response);
       setIsOpen(false);
@@ -100,6 +103,7 @@ export default function TodoDetailed({
         title: "Todo Deleted Successfully",
         description: "Todo has been deleted",
       });
+      router.refresh();
     } catch (error: any) {
       console.log("🚀 ~ handleDelete ~ error:", error);
       toast({

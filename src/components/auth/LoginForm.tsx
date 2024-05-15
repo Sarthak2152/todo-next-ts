@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ToastAction } from "@/components/ui/toast";
 import axios from "axios";
 import {
   Card,
@@ -25,9 +26,26 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
     reset,
   } = useForm<userLogin>({ resolver: zodResolver(loginSchema) });
 
+  useEffect(() => {
+    toast({
+      title: "Login With Demo Credentials",
+      description: "Click on button to add demo credentials",
+      action: (
+        <ToastAction
+          onClick={() => {
+            setValue("email", "sarthak@gmail.com");
+            setValue("password", "Hello@1234");
+          }}
+          altText="Add info">
+          Add Credentials
+        </ToastAction>
+      ),
+    });
+  }, [setValue, toast]);
   const onSubmit: SubmitHandler<userLogin> = async (data) => {
     try {
       setLoading(true);

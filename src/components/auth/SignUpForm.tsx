@@ -118,7 +118,7 @@ function SignUpForm() {
               {!loading ? "Create an account" : "Creating account..."}
             </Button>
           </div>
-          <div className="mt-4 text-center text-xs">
+          <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
             <Link href="/login" className="underline">
               Sign in

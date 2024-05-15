@@ -16,8 +16,10 @@ import { Todo, todoSchema } from "@/schemas/todoSchema";
 import { useToast } from "../ui/use-toast";
 import axios from "axios";
 import { Textarea } from "../ui/textarea";
+import { useRouter } from "next/navigation";
 
 export const CreateTodoModal = () => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +47,7 @@ export const CreateTodoModal = () => {
       toast({
         description: "Todo created",
       });
+      router.refresh();
     } catch (error: any) {
       console.log("🚀 ~ CreateTodoModal ~ error:", error);
       toast({
