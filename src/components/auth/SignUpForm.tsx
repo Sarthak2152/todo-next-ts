@@ -30,10 +30,7 @@ function SignUpForm() {
   const onSubmit: SubmitHandler<UserSignUp> = async (data) => {
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/signup",
-        data
-      );
+      const response = await axios.post("/api/auth/signup", data);
       toast({
         title: "Sign up successful",
         description: "Your account has been created",

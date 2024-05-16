@@ -94,9 +94,7 @@ export default function TodoDetailed({
   const handleDelete = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.delete(
-        `http://localhost:3000/api/todo/${todo.id}`
-      );
+      const response = await axios.delete(`/api/todo/${todo.id}`);
       console.log("🚀 ~ handleDelete ~ response:", response);
       setIsOpen(false);
       toast({

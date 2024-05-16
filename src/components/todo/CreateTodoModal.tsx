@@ -41,7 +41,7 @@ export const CreateTodoModal = () => {
     console.log("🚀 ~ CreateTodoModal ~ data:", data);
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3000/api/todo", data);
+      const response = await axios.post("/api/todo", data);
       reset();
       setIsOpen(false);
       toast({

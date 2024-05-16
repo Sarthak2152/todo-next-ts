@@ -17,7 +17,7 @@ function AuthButton() {
   const onLogoutHandler = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:3000/api/auth/logout`);
+      const response = await axios.get(`/api/auth/logout`);
       router.push("/login");
       toast({
         title: "Logged out successfully",

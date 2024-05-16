@@ -50,10 +50,7 @@ const LoginForm = () => {
     try {
       setLoading(true);
       console.log(data);
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
-        data
-      );
+      const response = await axios.post("/api/auth/login", data);
       console.log("🚀 ~ onSubmit ~ response:", response.data);
       toast({
         title: "Login successful",

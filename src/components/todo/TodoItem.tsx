@@ -20,10 +20,9 @@ export function TodoItem({ todo }: TodoItemProps) {
   const handleChangeCompleted = async (checked: boolean | "indeterminate") => {
     try {
       setIsLoading(true);
-      const response = await axios.patch(
-        `http://localhost:3000/api/todo/${id}`,
-        { completed: checked }
-      );
+      const response = await axios.patch(`/api/todo/${id}`, {
+        completed: checked,
+      });
       console.log("🚀 ~ handleChangeCompleted ~ response:", response);
       setIsCompleted(checked);
     } catch (error) {
