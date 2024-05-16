@@ -45,7 +45,8 @@ const LoginForm = () => {
         </ToastAction>
       ),
     });
-  }, [setValue, toast]);
+  }, [toast, setValue]);
+
   const onSubmit: SubmitHandler<userLogin> = async (data) => {
     try {
       setLoading(true);
@@ -102,6 +103,15 @@ const LoginForm = () => {
             </div>
             <Button type="submit" disabled={loading} className="w-full">
               {!loading ? "Login" : "Logging in..."}
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                setValue("email", "sarthak@gmail.com");
+                setValue("password", "Hello@1234");
+              }}
+              variant="outline">
+              Add Demo Credentials
             </Button>
           </div>
           <div className="mt-4 text-center text-sm">
